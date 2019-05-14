@@ -1,0 +1,39 @@
+﻿petabridge.cmd{
+  host = "0.0.0.0"
+  port = 9110
+}
+
+akka {
+  coordinated-shutdown.exit-clr = on
+  actor {
+    provider = cluster
+	deployment{
+	  /router{ 
+        router = round-robin-group
+        routees.paths = ["/user/echo"]
+        cluster{
+          enabled = on
+          allow-local-routees = on
+        }
+      }
+    }
+  }
+  
+  remote {
+    dot-netty.tcp {
+      hostname = "0.0.0.0"
+
+      # the values below this comment may be overridden by Akka.Bootstrap.Docker at runtime
+      public-hostname = "localhost"
+      port = 4053
+      }
+  }            
+
+  cluster {
+    roles = [demo]
+
+    #Docker bootstrapper may override this at runtime
+    seed-nodes = ["akka.tcp://amazing@localhost:4053"] 
+    
+  }
+}
