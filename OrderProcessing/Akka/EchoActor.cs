@@ -6,9 +6,12 @@ namespace AmazingWebshop
 {
     public sealed class EchoActor : ReceiveActor
     {
+        
         private readonly ILoggingAdapter _log = Context.GetLogger();
+        private string currentCustomer;
+
         public EchoActor()
-        {
+        {           
             ReceiveAny(_ =>
             {
                 _log.Info("Received {0} from {1}", _, Sender);
