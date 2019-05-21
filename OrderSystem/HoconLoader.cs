@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AmazingWebshop.Akka
+namespace AkkaUtilities
 {
     public static class HoconLoader
     {

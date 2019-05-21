@@ -2,21 +2,17 @@
 
 services:
   seed:
-    image: amazing-webshop:v1
+    image: amazing-orderprocessing:latest
     hostname: seed
     ports:
       - '9110:9110'
-      - '0:4053'
     environment:
       CLUSTER_PORT: 4053
       CLUSTER_IP: "seed"
       CLUSTER_SEEDS: "akka.tcp://amazing@seed:4053"
 
   replica1:
-    image: amazing-webshop:v1
-    ports:
-      - '0:9110'
-      - '0:4053'
+    image: amazing-orderprocessing:latest
     environment:
       CLUSTER_PORT: 4053
       CLUSTER_SEEDS: "akka.tcp://amazing@seed:4053"
@@ -24,10 +20,17 @@ services:
       - "seed"
 
   replica2:
-    image: amazing-webshop:v1
+    image: amazing-orderprocessing:latest
+    environment:
+      CLUSTER_PORT: 4053
+      CLUSTER_SEEDS: "akka.tcp://amazing@seed:4053"
+    depends_on:
+      - "seed"
+
+  api:
+    image: amazing-orderapi:latest
     ports:
-      - '0:9110'
-      - '0:4053'
+      - '8080:80'
     environment:
       CLUSTER_PORT: 4053
       CLUSTER_SEEDS: "akka.tcp://amazing@seed:4053"

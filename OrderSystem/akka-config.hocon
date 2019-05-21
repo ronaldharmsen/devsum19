@@ -10,7 +10,7 @@ akka {
 	deployment{
 	  /router{ 
         router = round-robin-group
-        routees.paths = ["/user/echo"]
+        routees.paths = ["/user/orders"]
         cluster{
           enabled = on
           allow-local-routees = on
