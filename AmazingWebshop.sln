@@ -9,7 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApi", "OrderApi\OrderA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtime", "Runtime", "{F5FFF147-0A2F-475C-8123-689E6CAFF758}"
 	ProjectSection(SolutionItems) = preProject
+		build-containers.cmd = build-containers.cmd
 		docker-compose.yaml = docker-compose.yaml
+		run-mongo.cmd = run-mongo.cmd
+		setup-mongo.cmd = setup-mongo.cmd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderSystem", "OrderSystem\OrderSystem.csproj", "{CC0E0B8C-A547-420C-A17A-53BD5F40E962}"

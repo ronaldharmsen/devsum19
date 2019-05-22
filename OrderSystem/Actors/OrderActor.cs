@@ -5,6 +5,7 @@ using Akka.Persistence;
 using AkkaUtilities.Actors;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AmazingWebshop
 {
@@ -18,6 +19,11 @@ namespace AmazingWebshop
         private static readonly TimeSpan InactivityWindow = TimeSpan.FromSeconds(20);
         private readonly ILoggingAdapter _log = Context.GetLogger();
         private readonly List<ItemOrdered> OrderedItems = new List<ItemOrdered>();
+        protected override void OnPersistFailure(Exception cause, object @event, long sequenceNr)
+        {
+            base.OnPersistFailure(cause, @event, sequenceNr);
+            _log.Error($"Persistence failure! {cause.Message}");
+        }
 
         public OrderActor()
         {
@@ -33,6 +39,7 @@ namespace AmazingWebshop
             message
                 .Match()
                 .With<OrderItem>(HandleMessage)
+                .With<GetOrderItems>(HandleGetOrderItems)
                 .With<ReceiveTimeout>(HandleReceiveTimeout)
                 .Default(x => _log.Error("Unhandled message type."));
         }
@@ -46,6 +53,17 @@ namespace AmazingWebshop
 
                 _log.Info($"Item {item.Article} x {item.Quantity} placed in order...");
             });
+        }
+
+        private void HandleGetOrderItems()
+        {
+            var result = new ShoppingBasket
+            {
+                Items = OrderedItems.Select(i => new OrderItem { Article = i.Article, Quantity = i.Quantity }).ToArray(),
+                Id = EntityId
+            };
+
+            Context.Sender.Tell(result);
         }
 
         private void HandleReceiveTimeout()
@@ -73,5 +91,11 @@ namespace AmazingWebshop
         public string Order { get; }
         public string Article { get; }
         public double Quantity { get; }
+    }
+
+    public class ShoppingBasket
+    {
+        public string Id { get; set; }
+        public OrderItem[] Items { get; set; }
     }
 }

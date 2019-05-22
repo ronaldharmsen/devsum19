@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
+using AkkaUtilities.Actors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OrderApi.Controllers
@@ -18,16 +19,17 @@ namespace OrderApi.Controllers
             this.orders = orders;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {            
-            return new string[] { "value1", "value2" };
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<OrderItem>> Get(string id)
+        {
+            var basket = await this.orders.GetOrderItemsForOrder(id);
+            return basket.Items;
         }
 
-        [HttpPost]
-        public void Post([FromBody] OrderItemModel item)
+        [HttpPost("{orderid}")]
+        public void Post(string orderid, [FromBody] OrderItemModel item)
         {
-            this.orders.OrderItem("1", item.Article, item.Quantity);
+            this.orders.OrderItem(orderid, item.Article, item.Quantity);
         }
     }
 

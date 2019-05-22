@@ -9,4 +9,6 @@ namespace AkkaUtilities.Actors
         public string Article { get; set; }
         public double Quantity { get; set; }
     }
+
+    public class GetOrderItems { }
 }
