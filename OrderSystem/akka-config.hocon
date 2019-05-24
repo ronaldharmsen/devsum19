@@ -22,22 +22,12 @@ akka {
 	  journal {
 	    plugin = "akka.persistence.journal.mongodb"
 		mongodb {
-			# qualified type name of the MongoDb persistence journal actor
 			class = "Akka.Persistence.MongoDb.Journal.MongoDbJournal, Akka.Persistence.MongoDb"
-
-			# connection string used for database access
 			connection-string = "mongodb://myuser:secret@mongodb:27017/webshop"
-
-			# should corresponding journal table's indexes be initialized automatically
-			auto-initialize = off
-
-			# dispatcher used to drive journal actor
-			plugin-dispatcher = "akka.actor.default-dispatcher"
-
-			# MongoDb collection corresponding with persistent journal
 			collection = "EventJournal"
 
-			# metadata collection
+			auto-initialize = off
+			plugin-dispatcher = "akka.actor.default-dispatcher"
 			metadata-collection = "Metadata"
 		}
 	}
@@ -45,20 +35,12 @@ akka {
 	snapshot-store {
 		plugin = "akka.persistence.snapshot-store.mongodb"
 		mongodb {
-			# qualified type name of the MongoDB persistence snapshot actor
 			class = "Akka.Persistence.MongoDb.Snapshot.MongoDbSnapshotStore, Akka.Persistence.MongoDb"
-
-			# connection string used for database access
 			connection-string = "mongodb://myuser:secret@mongodb:27017/webshop"
-
-			# should corresponding snapshot's indexes be initialized automatically
-			auto-initialize = off
-
-			# dispatcher used to drive snapshot storage actor
-			plugin-dispatcher = "akka.actor.default-dispatcher"
-
-			# MongoDb collection corresponding with persistent snapshot store
 			collection = "SnapshotStore"
+
+			auto-initialize = off
+			plugin-dispatcher = "akka.actor.default-dispatcher"
 		}
 	  }
    }
